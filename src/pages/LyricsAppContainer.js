@@ -14,7 +14,6 @@ class LyricsAppContainer extends Component {
   };
 
   render() {
-    console.log(this.props);
     return (
       <div className='app-container'>
         <div className='search-panel-container'>
