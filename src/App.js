@@ -1,5 +1,7 @@
+import { LyricsAppContainer } from './pages/LyricsAppContainer';
+
 function App() {
-  return <h1>Hello World, please find application mockups in src/assets/mockups</h1>;
+  return <LyricsAppContainer />;
 }
 
 export default App;

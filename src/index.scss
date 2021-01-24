@@ -1,0 +1,11 @@
+@import './assets/scss/variables.scss';
+@import './assets/scss/mixins.scss';
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: $appFontFamily;
+  background-image: $appBackgroundPath;
+  @include backgroundImageStyle();
+}
+
