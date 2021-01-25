@@ -1,9 +1,9 @@
-import { NetworkManager } from '../network/NetworkManager';
+import { baseURL } from "../utility/appConstants";
 
-export const fetchLyricSuggestions = ({ searchQuery }) => {
-  return NetworkManager.getInstance().get(`suggest/${searchQuery}`);
+export const fetchLyricSuggestions = (searchQuery) => {
+  return fetch(`${baseURL}suggest/${searchQuery}`);
 };
 
 export const fetchLyrics = ({ artist, title }) => {
-  return NetworkManager.getInstance().get(`v1/${artist}/${title}`);
+  return fetch(`${baseURL}v1/${artist}/${title}`);
 };

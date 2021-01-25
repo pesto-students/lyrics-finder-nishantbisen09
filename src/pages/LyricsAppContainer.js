@@ -1,23 +1,34 @@
 import React, { Component } from 'react';
-import { Search } from '../components/search/Search';
+import { SearchBar } from '../components/search/Search';
+import { fetchLyricSuggestions } from '../services/lyrics';
+import { debounce } from '../utility';
+import { searchDebounceTime } from '../utility/appConstants';
 import './lyricsApp.scss';
-import { connect } from 'react-redux';
-import { getLyricSuggestions } from '../redux/actions/lyrics';
 
 class LyricsAppContainer extends Component {
-  state = { searchQuery: '' };
+  state = { searchQuery: '', suggestions: [] };
+
+  constructor(props) {
+    super(props);
+    this.fetchLyrics = debounce(this.fetchLyrics, searchDebounceTime);
+  }
 
   onSearchQueryChange = ({ target }) => {
     const searchQuery = target.value;
-    this.setState({ searchQuery });
-    this.props.getLyricSuggestions({ searchQuery });
+    this.setState({ searchQuery }, this.fetchLyrics);
+  };
+
+  fetchLyrics = () => {
+    fetchLyricSuggestions(this.state.searchQuery)
+      .then((response) => response.json())
+      .then((response) => this.setState({ suggestions: response.data }));
   };
 
   render() {
     return (
       <div className='app-container'>
         <div className='search-panel-container'>
-          <Search
+          <SearchBar
             onChange={this.onSearchQueryChange}
             value={this.state.searchQuery}
           />
@@ -27,10 +38,4 @@ class LyricsAppContainer extends Component {
   }
 }
 
-const mapStateToProps = ({ lyricsReducer }) => ({
-  suggestions: lyricsReducer.suggestions,
-});
-
-export default connect(mapStateToProps, { getLyricSuggestions })(
-  LyricsAppContainer
-);
+export default LyricsAppContainer;

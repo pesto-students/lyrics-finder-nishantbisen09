@@ -1,1 +1,0 @@
-export const searchDebounceTime = 3000;

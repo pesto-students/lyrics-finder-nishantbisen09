@@ -1,7 +1,7 @@
 import React from 'react';
 import './search.scss';
 
-export const Search = ({ onChange, value }) => {
+export const SearchBar = ({ onChange, value }) => {
   return (
     <div className='search'>
       <input
