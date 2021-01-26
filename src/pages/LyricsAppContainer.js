@@ -3,7 +3,7 @@ import { SearchBar } from '../components/search/Search';
 import { fetchLyricSuggestions } from '../services/lyrics';
 import { debounce } from '../utility';
 import { searchDebounceTime } from '../utility/appConstants';
-import './lyricsApp.scss';
+import './lyricsApp.css';
 
 class LyricsAppContainer extends Component {
   state = { searchQuery: '', suggestions: [] };
@@ -24,12 +24,18 @@ class LyricsAppContainer extends Component {
       .then((response) => this.setState({ suggestions: response.data }));
   };
 
+  onSearchBarQuerySubmit = (event) => {
+    event.preventDefault();
+    console.log('hello');
+  };
+
   render() {
     return (
       <div className='app-container'>
         <div className='search-panel-container'>
           <SearchBar
             onChange={this.onSearchQueryChange}
+            onSubmit={this.onSearchBarQuerySubmit}
             value={this.state.searchQuery}
           />
         </div>

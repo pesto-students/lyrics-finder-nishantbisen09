@@ -1,0 +1,6 @@
+.app-container .search-panel-container {
+  margin-top: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
