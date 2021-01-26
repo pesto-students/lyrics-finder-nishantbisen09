@@ -1,4 +1,4 @@
-import { LyricsAppContainer } from './pages/LyricsAppContainer';
+import LyricsAppContainer from './pages/LyricsAppContainer';
 
 function App() {
   return <LyricsAppContainer />;
