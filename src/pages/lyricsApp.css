@@ -1,6 +1,31 @@
 .app-container .search-panel-container {
-  margin-top: 10%;
+  margin-top: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.result-container {
+  margin: 50px 5%;
+  padding: 30px;
+  width: auto;
+  background-color: #f5f5f5ab;
+  border-radius: 8px;
+  display: grid;
+  gap: 40px;
+  overflow-y: auto;
+}
+
+@media (max-width: 600px) {
+  .result-container {
+    height: 70vh; 
+  }
+}
+
+
+@media (min-width: 800px) {
+  .result-container {
+    grid-template-columns: repeat(3, 1fr);
+    height: 500px;
+  }
 }
