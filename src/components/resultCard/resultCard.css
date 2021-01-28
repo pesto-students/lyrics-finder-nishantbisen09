@@ -24,7 +24,7 @@
   background-color: #ffc82c;
 }
 
-.track-name {
+.lyric-details-container .track-name {
   color: #f5f5f5;
   font-size: 15px;
   white-space: nowrap; 
@@ -33,11 +33,11 @@
   text-overflow: ellipsis;
 }
 
-.artist-name {
+.lyric-details-container .artist-name {
   font-size: 12px;
 }
 
-.lyric-album-art > img {
+.lyric-details-container .lyric-album-art > img {
   width: 100%;
   border-radius: 50%;
 }
