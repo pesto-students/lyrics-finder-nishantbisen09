@@ -42,10 +42,10 @@
 @media (min-width: 800px) {
   .results-container {
     max-height: 500px;
-    min-height: 370px;
+    min-height: 450px;
   }
   .results {
-    max-height: 42vh;
+    max-height: 37vh;
     grid-template-columns: repeat(3, 1fr);
   }
   .page-navigator-container {

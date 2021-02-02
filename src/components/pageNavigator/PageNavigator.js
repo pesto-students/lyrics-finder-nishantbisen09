@@ -7,18 +7,15 @@ export const PageNavigator = ({
   currentPageNo,
   onNavigationButtonClick,
 }) => {
-  const isNextButtonDisabled = () => currentPageNo === totalNoOfPages;
-  const isPreviousButtonDisabled = () => currentPageNo === 1;
-
   return (
     <div className='page-navigator-container'>
       <div className='previous-btn'>
         <i
           className={`fas fa-arrow-circle-left ${
-            isPreviousButtonDisabled() && 'disabled'
+            currentPageNo === 1 && 'disabled'
           }`}
           onClick={() =>
-            !isPreviousButtonDisabled() &&
+            currentPageNo !== 1 &&
             onNavigationButtonClick(navigationActions.prev)
           }
         ></i>
@@ -26,10 +23,10 @@ export const PageNavigator = ({
       <div className='next-btn'>
         <i
           className={`fas fa-arrow-circle-right ${
-            isNextButtonDisabled() && 'disabled'
+            currentPageNo === totalNoOfPages && 'disabled'
           }`}
           onClick={() =>
-            !isNextButtonDisabled() &&
+            currentPageNo !== totalNoOfPages &&
             onNavigationButtonClick(navigationActions.next)
           }
         ></i>

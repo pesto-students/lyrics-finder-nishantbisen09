@@ -1,4 +1,5 @@
 import React from 'react';
+import { CopyToClipboard } from '../copyToClipboard/CopyToClipboard';
 import './lyricDetail.css';
 
 export const LyricDetailViewer = ({
@@ -18,7 +19,7 @@ export const LyricDetailViewer = ({
           <img src={artist?.picture_small} alt='artist-img' />
         </div>
       </div>
-      <div className='lyrics'>
+      <div className='lyrics scroller'>
         {lyrics ? (
           lyrics
         ) : (
@@ -37,11 +38,9 @@ export const LyricDetailViewer = ({
       </div>
       {lyrics && (
         <div className='copy-btn'>
-          <i
-            className='fas fa-copy'
-            onClick={onCopyClick}
-            title='Copy lyrics'
-          ></i>
+          <CopyToClipboard text={lyrics} onCopy={onCopyClick}>
+            <i className='fas fa-copy' title='Copy lyrics'></i>
+          </CopyToClipboard>
         </div>
       )}
       <div id='copy-textarea'></div>

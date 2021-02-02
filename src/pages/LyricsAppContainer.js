@@ -1,18 +1,21 @@
 import React, { Component, createRef } from 'react';
-import ReactDOM from 'react-dom';
+import { debounce } from 'lodash';
 import { LyricDetailViewer } from '../components/lyricDetailViewer/LyricDetailViewer';
 import { PageNavigator } from '../components/pageNavigator/PageNavigator';
 import { ResultCard } from '../components/resultCard/ResultCard';
 import { SearchBar } from '../components/searchBar/SearchBar';
 import { Spinner } from '../components/spinner/spinner';
 import { fetchLyrics, fetchLyricSuggestions } from '../services/lyrics';
-import { debounce } from '../utility';
 import {
+  APP_MESSAGES,
   defaultPageSize,
   navigationActions,
   searchDebounceTime,
+  infoToastConfig,
 } from '../utility/appConstants';
 import './lyricsApp.css';
+import { escapeForwardSlash, getTotalNoOfPages } from '../utility';
+import { toast } from 'react-toastify';
 
 class LyricsAppContainer extends Component {
   state = {
@@ -41,7 +44,7 @@ class LyricsAppContainer extends Component {
     if (searchQuery) {
       this.setState({ isLoading: true });
       fetchLyricSuggestions(searchQuery)
-        .then((response) => response.json())
+        .then((response) => (response ? response.json() : { data: [] }))
         .then((response) =>
           this.setState({
             suggestions: response.data,
@@ -53,13 +56,6 @@ class LyricsAppContainer extends Component {
         );
     }
   };
-
-  escapeForwardSlash = (word) => {
-    return word.replace(/\//g, '-');
-  };
-
-  getTotalNoOfPages = () =>
-    Math.ceil(this.state.suggestions.length / defaultPageSize);
 
   getSuggestionsByPageNo = () => {
     const { currentPage, suggestions } = this.state;
@@ -85,7 +81,7 @@ class LyricsAppContainer extends Component {
 
   onLyricCardClick = ({ artist, title }) => {
     this.setState({ isLoading: true });
-    fetchLyrics({ artist: artist.name, title: this.escapeForwardSlash(title) })
+    fetchLyrics({ artist: artist.name, title: escapeForwardSlash(title) })
       .then((response) => response.json())
       .then(({ lyrics }) => {
         this.setState({
@@ -98,19 +94,6 @@ class LyricsAppContainer extends Component {
 
   onGoBackFromLyricViewClick = () => {
     this.setState({ isLyricView: false, currentLyrics: {} });
-  };
-
-  onLyricsCopyClick = () => {
-    const textArea = React.createElement('textarea', {
-      id: 'lyricsText',
-      style: { opacity: 0 },
-      defaultValue: this.state.currentLyrics.lyrics,
-    });
-    const textAreaContainer = document.getElementById('copy-textarea');
-    ReactDOM.render(textArea, textAreaContainer);
-    document.getElementById('lyricsText').select();
-    document.execCommand('copy');
-    ReactDOM.unmountComponentAtNode(textAreaContainer);
   };
 
   render() {
@@ -136,7 +119,9 @@ class LyricsAppContainer extends Component {
             <LyricDetailViewer
               lyricsData={currentLyrics}
               onBackButtonClick={this.onGoBackFromLyricViewClick}
-              onCopyClick={this.onLyricsCopyClick}
+              onCopyClick={() =>
+                toast.info(APP_MESSAGES.lyricsCopied, infoToastConfig)
+              }
             />
           )}
           {!!suggestions.length && !isLyricView && (
@@ -157,12 +142,12 @@ class LyricsAppContainer extends Component {
                     </div>
                   );
                 })}
-                <PageNavigator
-                  currentPageNo={currentPage}
-                  totalNoOfPages={this.getTotalNoOfPages()}
-                  onNavigationButtonClick={this.onNavigationButtonClick}
-                />
               </div>
+              <PageNavigator
+                currentPageNo={currentPage}
+                totalNoOfPages={getTotalNoOfPages(suggestions.length)}
+                onNavigationButtonClick={this.onNavigationButtonClick}
+              />
             </div>
           )}
         </div>
