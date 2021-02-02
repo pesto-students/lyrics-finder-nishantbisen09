@@ -1,0 +1,20 @@
+.page-navigator-container {
+  display: flex;
+  width: 100px;
+}
+
+.page-navigator-container .previous-btn,
+.page-navigator-container .next-btn {
+  margin: 0 10px;
+}
+
+.page-navigator-container i {
+  color: #13322d;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.page-navigator-container .disabled {
+  color: #959595;
+  pointer-events: none;
+}

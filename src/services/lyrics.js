@@ -1,9 +1,10 @@
-import { baseURL } from "../utility/appConstants";
+import { fetchWithTimeout } from '../utility';
+import { baseURL } from '../utility/appConstants';
 
 export const fetchLyricSuggestions = (searchQuery) => {
-  return fetch(`${baseURL}suggest/${searchQuery}`);
+  return fetchWithTimeout(`${baseURL}suggest/${searchQuery}`);
 };
 
 export const fetchLyrics = ({ artist, title }) => {
-  return fetch(`${baseURL}v1/${artist}/${title}`);
+  return fetchWithTimeout(`${baseURL}v1/${artist}/${title}`);
 };
