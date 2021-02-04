@@ -113,6 +113,7 @@ class LyricsAppContainer extends Component {
               onChange={this.onSearchQueryChange}
               onSubmit={this.onSearchQuerySubmit}
               value={searchQuery}
+              placeholder={'Search by song or artist name'}
             />
           </div>
           {isLyricView && (

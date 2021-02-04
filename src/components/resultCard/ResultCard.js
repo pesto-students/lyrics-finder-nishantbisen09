@@ -1,4 +1,5 @@
 import React from 'react';
+import { APP_MESSAGES } from '../../utility/appConstants';
 import './resultCard.css';
 
 export const ResultCard = ({ artist, title }) => {
@@ -6,11 +7,22 @@ export const ResultCard = ({ artist, title }) => {
     <div className='lyric-card-container'>
       <div className='lyric-details-container'>
         <div className='lyric-details'>
-          <span className='track-name'>{title}</span>
-          <span className='artist-name'>-{artist?.name}</span>
+          <span className='track-name'>
+            {title ? title : APP_MESSAGES.noTitleFound}
+          </span>
+          <span className='artist-name'>
+             {artist && artist.name ? `- ${artist.name}` : APP_MESSAGES.artistNameUnavailable}
+          </span>
         </div>
         <div className='lyric-album-art'>
-          <img src={artist.picture_small} alt='artist-img' />
+          <img
+            src={
+              artist && artist.picture_small
+                ? artist.picture_small
+                : require('../../assets/images/album-art-placeholder.jpg')
+            }
+            alt='artist-img'
+          />
         </div>
       </div>
     </div>

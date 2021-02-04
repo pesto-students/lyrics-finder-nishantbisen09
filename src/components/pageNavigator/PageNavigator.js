@@ -11,6 +11,7 @@ export const PageNavigator = ({
     <div className='page-navigator-container'>
       <div className='previous-btn'>
         <i
+          data-testid='prevBtn'
           className={`fas fa-arrow-circle-left ${
             currentPageNo === 1 && 'disabled'
           }`}
@@ -22,6 +23,7 @@ export const PageNavigator = ({
       </div>
       <div className='next-btn'>
         <i
+          data-testid='nextBtn'
           className={`fas fa-arrow-circle-right ${
             currentPageNo === totalNoOfPages && 'disabled'
           }`}
