@@ -44,7 +44,7 @@ class LyricsAppContainer extends Component {
     if (searchQuery) {
       this.setState({ isLoading: true });
       fetchLyricSuggestions(searchQuery)
-        .then((response) => (response ? response.json() : { data: [] }))
+        .then((response) => response.json())
         .then((response) =>
           this.setState({
             suggestions: response.data,
