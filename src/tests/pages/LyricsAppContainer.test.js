@@ -1,97 +1,126 @@
-import { mount } from 'enzyme';
+import React from 'react';
+import { render } from '@testing-library/react';
 import LyricsAppContainer from '../../pages/LyricsAppContainer';
-import lodash, { wrap } from 'lodash';
-import { navigationActions } from '../../utility/appConstants';
+import userEvent from '@testing-library/user-event';
+import { suggestions } from '../Fixtures';
+import { APP_MESSAGES } from '../../utility/strings';
 
-describe('LyricsAppContainer', () => {
-  it('onSearchQueryChange should update the passed state', () => {
-    const wrapper = mount(<LyricsAppContainer />);
-    wrapper.instance().onSearchQueryChange({ target: { value: 'hello' } });
-    expect(wrapper.instance().state.searchQuery).toBe('hello');
+describe('LYRIC APP CONTAINER', () => {
+  let wrapper;
+  const placeholder = 'Search by song or artist name';
+  const searchText = 'arijit';
+  const lyrics = 'Im in love with the';
+
+  const mockSuggestionSuccessResponse = { data: suggestions };
+  const mockSuggestionJsonPromise = Promise.resolve(
+    mockSuggestionSuccessResponse
+  );
+  const mockSuggestionsFetchPromise = Promise.resolve({
+    json: () => mockSuggestionJsonPromise,
   });
 
-  it('fetchLyrics should call fetchLyricSuggestions with provided input', () => {
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        json: () => Promise.resolve({ data: [] }),
-      })
-    );
-    lodash.debounce = (fn) => fn;
-    const wrapper = mount(<LyricsAppContainer />);
-    wrapper
-      .instance()
-      .setState({ ...wrapper.instance().state, searchQuery: 'hello' });
-    wrapper.instance().fetchLyrics();
-    expect(global.fetch).toHaveBeenCalled();
+  const mockLyricsSuccessResponse = { lyrics };
+  const mockLyricsJsonPromise = Promise.resolve(mockLyricsSuccessResponse);
+  const mockLyricsFetchPromise = Promise.resolve({
+    json: () => mockLyricsJsonPromise,
   });
 
-  it('getSuggestionsByPageNo should return correct suggestions', () => {
-    const wrapper = mount(<LyricsAppContainer />);
-    wrapper.instance().setState({
-      ...wrapper.instance().state,
-      suggestions: [
-        { id: 1, title: 'song1' },
-        { id: 2, title: 'song1' },
-        { id: 3, title: 'song1' },
-        { id: 4, title: 'song1' },
-        { id: 5, title: 'song1' },
-        { id: 6, title: 'song1' },
-        { id: 7, title: 'song1' },
-        { id: 8, title: 'song1' },
-        { id: 9, title: 'song1' },
-        { id: 10, title: 'song1' },
-      ],
-      currentPage: 2,
-    });
-    expect(wrapper.instance().getSuggestionsByPageNo().length).toBe(1);
-    wrapper.instance().setState({
-      ...wrapper.instance().state,
-      currentPage: 1,
-    });
-    expect(wrapper.instance().getSuggestionsByPageNo().length).toBe(9);
+  beforeEach(() => {
+    wrapper = render(<LyricsAppContainer />);
   });
 
-  it('Should call fetchLyrics when onSearchQuerySubmit  is called', () => {
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        json: () => Promise.resolve({ data: [] }),
-      })
-    );
-    lodash.debounce = (fn) => fn;
-    const wrapper = mount(<LyricsAppContainer />);
-    wrapper.instance().fetchLyrics = jest.fn();
-    wrapper.instance().onSearchQuerySubmit({
-      preventDefault() {
-        return;
-      },
-    });
-    expect(wrapper.instance().fetchLyrics).toHaveBeenCalled();
+  afterEach(() => {
+    jest.resetAllMocks();
   });
 
-  it('Should set the correct page no when onNavigationButtonClick is called', () => {
-    const wrapper = mount(<LyricsAppContainer />);
-    wrapper.instance().onNavigationButtonClick(navigationActions.next);
-    expect(wrapper.instance().state.currentPage).toBe(2);
-    wrapper.instance().onNavigationButtonClick(navigationActions.prev);
-    expect(wrapper.instance().state.currentPage).toBe(1);
+  it('shows searchbar to search lyrics', () => {
+    const { getByPlaceholderText } = wrapper;
+    expect(getByPlaceholderText(placeholder)).toBeTruthy();
   });
 
-  it('Should show lyric detail view when onLyricCardClick is called', () => {
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        json: () => Promise.resolve({ data: [] }),
-      })
-    );
-    const wrapper = mount(<LyricsAppContainer />);
-    wrapper
-      .instance()
-      .onLyricCardClick({ artist: { name: 'stephen' }, title: 'love me' });
-    expect(global.fetch).toHaveBeenCalled();
+  it('shows search results when enter button is clicked on input', async () => {
+    jest
+      .spyOn(global, 'fetch')
+      .mockImplementation(() => mockSuggestionsFetchPromise);
+    const { getByPlaceholderText, findAllByText } = wrapper;
+    const input = getByPlaceholderText(placeholder);
+    userEvent.type(input, `${searchText}{enter}`);
+    const resultCard = await findAllByText('Khwabo k naate');
+    expect(resultCard.length).toBeGreaterThan(0);
   });
 
-  it('Should close the lyric detail view when onGoBackFromLyricViewClick is called', () => {
-    const wrapper = mount(<LyricsAppContainer />);
-    wrapper.instance().onGoBackFromLyricViewClick();
-    expect(wrapper.instance().state.isLyricView).toBe(false);
+  it('shows paginator when the results appear', async () => {
+    jest
+      .spyOn(global, 'fetch')
+      .mockImplementation(() => mockSuggestionsFetchPromise);
+    const { getByPlaceholderText, findByTestId } = wrapper;
+    const input = getByPlaceholderText(placeholder);
+    userEvent.type(input, `${searchText}{enter}`);
+    const prevBtn = await findByTestId('prevBtn');
+    const nextBtn = await findByTestId('nextBtn');
+    expect(prevBtn).toBeTruthy();
+    expect(nextBtn).toBeTruthy();
   });
+
+  it('should go to next page when next navigation button is clicked', async () => {
+    jest
+      .spyOn(global, 'fetch')
+      .mockImplementation(() => mockSuggestionsFetchPromise);
+    const { getByPlaceholderText, findAllByText, findByTestId } = wrapper;
+    const input = getByPlaceholderText(placeholder);
+    userEvent.type(input, `${searchText}{enter}`);
+    const nextBtn = await findByTestId('nextBtn');
+    userEvent.click(nextBtn);
+    const resultCards = await findAllByText('Khwabo k naate');
+    expect(resultCards.length).toBe(1);
+  });
+
+  it('should go to previous page when next navigation button is clicked', async () => {
+    jest
+      .spyOn(global, 'fetch')
+      .mockImplementation(() => mockSuggestionsFetchPromise);
+    const { getByPlaceholderText, findAllByText, findByTestId } = wrapper;
+    const input = getByPlaceholderText(placeholder);
+    userEvent.type(input, `${searchText}{enter}`);
+    const nextBtn = await findByTestId('nextBtn');
+    userEvent.click(nextBtn);
+    const prevBtn = await findByTestId('prevBtn');
+    userEvent.click(prevBtn);
+    const newResultCards = await findAllByText('Khwabo k naate');
+    expect(newResultCards.length).toBe(9);
+  });
+
+  it('should show lyric details when clicked on some lyric card', async () => {
+    jest
+      .spyOn(global, 'fetch')
+      .mockImplementation(() => mockSuggestionsFetchPromise);
+    const { getByPlaceholderText, findAllByText, findByText } = wrapper;
+    const input = getByPlaceholderText(placeholder);
+    userEvent.type(input, `${searchText}{enter}`);
+    const resultCard = await findAllByText('Khwabo k naate');
+    jest
+      .spyOn(global, 'fetch')
+      .mockImplementation(() => mockLyricsFetchPromise);
+    userEvent.click(resultCard[0]);
+    const lyricsContainer = await findByText(lyrics);
+    expect(lyricsContainer).toBeTruthy();
+  });
+
+  it('should go back to results view when back button is clicked',async () => {
+    jest
+    .spyOn(global, 'fetch')
+    .mockImplementation(() => mockSuggestionsFetchPromise);
+  const { getByPlaceholderText, findAllByText, findByTitle } = wrapper;
+  const input = getByPlaceholderText(placeholder);
+  userEvent.type(input, `${searchText}{enter}`);
+  const resultCard = await findAllByText('Khwabo k naate');
+  jest
+    .spyOn(global, 'fetch')
+    .mockImplementation(() => mockLyricsFetchPromise);
+  userEvent.click(resultCard[0]);
+  const backBtn = await findByTitle(APP_MESSAGES.goBackToResults);
+  userEvent.click(backBtn);
+  expect(resultCard[0]).toBeTruthy()
+  });
+
 });

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SearchBar } from '../../../components/searchBar/SearchBar';
 import '@testing-library/jest-dom/extend-expect';
@@ -20,7 +20,7 @@ describe('SEARCHBAR COMPONENT', () => {
   it('Should call onSubmit on enter button click', () => {
     render(<SearchBar {...defaultProps} />);
     const input = screen.getByTestId('search-input');
-    fireEvent.submit(input);
+    userEvent.type(input,'{enter}')
     expect(defaultProps.onSubmit).toHaveBeenCalled();
   });
 

@@ -15,7 +15,7 @@ export const SearchBar = ({ onChange, onSubmit, value, placeholder }) => {
         />
       </form>
       <div data-testid='search-icon' className='search-icon'>
-        <i className='fas fa-search'></i>
+        <i className='fas fa-search' onClick={onSubmit}></i>
       </div>
     </div>
   );

@@ -1,7 +1,8 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { PageNavigator } from '../../../components/pageNavigator/PageNavigator';
 import { navigationActions } from '../../../utility/appConstants';
+import userEvent from '@testing-library/user-event';
 
 describe('PAGE NAVIGATOR', () => {
   describe('Should render', () => {
@@ -44,12 +45,12 @@ describe('PAGE NAVIGATOR', () => {
       );
       const nextBtn = screen.getByTestId('nextBtn');
       const prevBtn = screen.getByTestId('prevBtn');
-      fireEvent.click(nextBtn);
+      userEvent.click(nextBtn);
 
       expect(onNavigationButtonClick).toHaveBeenCalledWith(
         navigationActions.next
       );
-      fireEvent.click(prevBtn);
+      userEvent.click(prevBtn);
       expect(onNavigationButtonClick).toHaveBeenCalledWith(
         navigationActions.prev
       );

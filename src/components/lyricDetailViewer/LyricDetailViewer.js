@@ -1,5 +1,5 @@
 import React from 'react';
-import { APP_MESSAGES } from '../../utility/appConstants';
+import { APP_MESSAGES } from '../../utility/strings';
 import { CopyToClipboard } from '../copyToClipboard/CopyToClipboard';
 import './lyricDetail.css';
 

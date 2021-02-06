@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { CopyToClipboard } from '../../../components/copyToClipboard/CopyToClipboard';
 
@@ -14,13 +15,12 @@ describe('COPY TO CLIPBOARD', () => {
 
   it('Should bind the passed onCopy as onClick to the passed child', () => {
     const onCopy = jest.fn();
-    document.execCommand = jest.fn();
     render(
       <CopyToClipboard text={'copy me'} onCopy={onCopy}>
         <h1>hello</h1>
       </CopyToClipboard>
     );
-    fireEvent.click(screen.getByText('hello'));
+    userEvent.click(screen.getByText('hello'));
     expect(onCopy).toHaveBeenCalled();
   });
 });

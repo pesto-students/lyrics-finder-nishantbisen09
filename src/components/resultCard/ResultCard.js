@@ -1,5 +1,5 @@
 import React from 'react';
-import { APP_MESSAGES } from '../../utility/appConstants';
+import { APP_MESSAGES } from '../../utility/strings';
 import './resultCard.css';
 
 export const ResultCard = ({ artist, title }) => {
@@ -19,7 +19,7 @@ export const ResultCard = ({ artist, title }) => {
             src={
               artist && artist.picture_small
                 ? artist.picture_small
-                : require('../../assets/images/album-art-placeholder.jpg')
+                : import('../../assets/images/album-art-placeholder.jpg')
             }
             alt='artist-img'
           />

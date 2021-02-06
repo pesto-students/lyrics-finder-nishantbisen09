@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ResultCard } from '../../../components/resultCard/ResultCard';
-import { APP_MESSAGES } from '../../../utility/appConstants';
+import { APP_MESSAGES } from '../../../utility/strings';
 
 describe('RESULTCARD', () => {
   describe('Should render passed', () => {
