@@ -2,9 +2,10 @@ import { toast } from 'react-toastify';
 import {
   apiTimeOutLimit,
   defaultPageSize,
-  APP_MESSAGES,
   errorToastConfig,
 } from './appConstants';
+
+import { APP_MESSAGES } from '../utility/strings';
 
 export function fetchWithTimeout(resource, timeout = apiTimeOutLimit, options) {
   const controller = new AbortController();

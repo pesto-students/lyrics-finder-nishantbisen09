@@ -1,5 +1,4 @@
-import React, { Component, createRef } from 'react';
-import { debounce } from 'lodash';
+import React, { Component } from 'react';
 import { LyricDetailViewer } from '../components/lyricDetailViewer/LyricDetailViewer';
 import { PageNavigator } from '../components/pageNavigator/PageNavigator';
 import { ResultCard } from '../components/resultCard/ResultCard';
@@ -7,12 +6,11 @@ import { SearchBar } from '../components/searchBar/SearchBar';
 import { Spinner } from '../components/spinner/spinner';
 import { fetchLyrics, fetchLyricSuggestions } from '../services/lyrics';
 import {
-  APP_MESSAGES,
   defaultPageSize,
   navigationActions,
-  searchDebounceTime,
   infoToastConfig,
 } from '../utility/appConstants';
+import { APP_MESSAGES } from '../utility/strings';
 import './lyricsApp.css';
 import { escapeForwardSlash, getTotalNoOfPages } from '../utility';
 import { toast } from 'react-toastify';
@@ -27,24 +25,12 @@ class LyricsAppContainer extends Component {
     isLyricView: false,
   };
 
-  lyricViewerRef = createRef();
-
-  constructor(props) {
-    super(props);
-    this.fetchLyrics = debounce(this.fetchLyrics, searchDebounceTime);
-  }
-
-  onSearchQueryChange = ({ target }) => {
-    const searchQuery = target.value;
-    this.setState({ searchQuery }, this.fetchLyrics);
-  };
-
   fetchLyrics = () => {
     const { searchQuery } = this.state;
     if (searchQuery) {
       this.setState({ isLoading: true });
       fetchLyricSuggestions(searchQuery)
-        .then((response) => (response ? response.json() : { data: [] }))
+        .then((response) => response.json())
         .then((response) =>
           this.setState({
             suggestions: response.data,
@@ -110,9 +96,12 @@ class LyricsAppContainer extends Component {
         <div className='app-container'>
           <div className='search-panel-container'>
             <SearchBar
-              onChange={this.onSearchQueryChange}
+              onChange={(event) =>
+                this.setState({ searchQuery: event.target.value })
+              }
               onSubmit={this.onSearchQuerySubmit}
               value={searchQuery}
+              placeholder={'Search by song or artist name'}
             />
           </div>
           {isLyricView && (

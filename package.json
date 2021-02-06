@@ -8,8 +8,8 @@
     "@testing-library/user-event": "^12.6.2",
     "lodash": "^4.17.20",
     "node-sass": "^4.14.1",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
     "react-scripts": "4.0.1",
     "react-toastify": "^7.0.3",
     "web-vitals": "^0.2.4"
@@ -17,8 +17,18 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --coverage --watchAll=false --testPathIgnorePatterns=src/utility/index.js",
     "eject": "react-scripts eject"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "**/*.{js,jsx}",
+      "!**/node_modules/**",
+      "!**/coverage/**",
+      "!**/serviceWorker.js",
+      "!**/index.js",
+      "!**/App.js"
+    ]
   },
   "eslintConfig": {
     "extends": [

@@ -1,4 +1,5 @@
 import React from 'react';
+import { APP_MESSAGES } from '../../utility/strings';
 import { CopyToClipboard } from '../copyToClipboard/CopyToClipboard';
 import './lyricDetail.css';
 
@@ -12,11 +13,24 @@ export const LyricDetailViewer = ({
     <div className='lyric-info-container'>
       <div className='lyric-info'>
         <div className='lyric-details'>
-          <span className='track-name'>{title}</span>
-          <span className='artist-name'>- {artist?.name}</span>
+          <span className='track-name'>
+            {title ? title : APP_MESSAGES.noTitleFound}
+          </span>
+          <span className='artist-name'>
+            {artist && artist.name
+              ? `- ${artist.name}`
+              : APP_MESSAGES.artistNameUnavailable}
+          </span>
         </div>
         <div className='lyric-album-art'>
-          <img src={artist?.picture_small} alt='artist-img' />
+          <img
+            src={
+              artist && artist.picture_small
+                ? artist.picture_small
+                : require('../../assets/images/album-art-placeholder.jpg')
+            }
+            alt='artist-img'
+          />
         </div>
       </div>
       <div className='lyrics scroller'>
@@ -33,17 +47,16 @@ export const LyricDetailViewer = ({
         <i
           className='fas fa-chevron-circle-left'
           onClick={onBackButtonClick}
-          title='Go back to results'
+          title={APP_MESSAGES.goBackToResults}
         ></i>
       </div>
       {lyrics && (
         <div className='copy-btn'>
           <CopyToClipboard text={lyrics} onCopy={onCopyClick}>
-            <i className='fas fa-copy' title='Copy lyrics'></i>
+            <i className='fas fa-copy' title={APP_MESSAGES.copyLyrics}></i>
           </CopyToClipboard>
         </div>
       )}
-      <div id='copy-textarea'></div>
     </div>
   );
 };
