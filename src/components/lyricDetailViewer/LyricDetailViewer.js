@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { APP_MESSAGES } from '../../utility/strings';
 import { CopyToClipboard } from '../copyToClipboard/CopyToClipboard';
 import './lyricDetail.css';
+import defaultArtistImage from '../../assets/images/album-art-placeholder.jpg';
 
 export const LyricDetailViewer = ({
   lyricsData,
@@ -9,6 +10,15 @@ export const LyricDetailViewer = ({
   onCopyClick,
 }) => {
   const { lyrics, artist, title } = lyricsData;
+
+  const [artistImage, setArtistImage] = useState(defaultArtistImage);
+
+  useEffect(() => {
+    setArtistImage(
+      artist && artist.picture_small ? artist.picture_small : defaultArtistImage
+    );
+  }, [artist]);
+
   return (
     <div className='lyric-info-container'>
       <div className='lyric-info'>
@@ -24,11 +34,8 @@ export const LyricDetailViewer = ({
         </div>
         <div className='lyric-album-art'>
           <img
-            src={
-              artist && artist.picture_small
-                ? artist.picture_small
-                : require('../../assets/images/album-art-placeholder.jpg')
-            }
+            src={artistImage}
+            onError={() => setArtistImage(defaultArtistImage)}
             alt='artist-img'
           />
         </div>
