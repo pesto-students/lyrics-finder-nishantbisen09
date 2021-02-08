@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { APP_MESSAGES } from '../../utility/strings';
 import './resultCard.css';
+import defaultArtistImage from '../../assets/images/album-art-placeholder.jpg';
 
 export const ResultCard = ({ artist, title }) => {
+  const [artistImage, setArtistImage] = useState(
+    artist && artist.picture_small ? artist.picture_small : defaultArtistImage
+  );
+
   return (
     <div className='lyric-card-container'>
       <div className='lyric-details-container'>
@@ -11,16 +16,15 @@ export const ResultCard = ({ artist, title }) => {
             {title ? title : APP_MESSAGES.noTitleFound}
           </span>
           <span className='artist-name'>
-             {artist && artist.name ? `- ${artist.name}` : APP_MESSAGES.artistNameUnavailable}
+            {artist && artist.name
+              ? `- ${artist.name}`
+              : APP_MESSAGES.artistNameUnavailable}
           </span>
         </div>
-        <div className='lyric-album-art'>
+        <div className='lyric-album-art' >
           <img
-            src={
-              artist && artist.picture_small
-                ? artist.picture_small
-                : import('../../assets/images/album-art-placeholder.jpg')
-            }
+            src={artistImage}
+            onError={() => setArtistImage(defaultArtistImage)}
             alt='artist-img'
           />
         </div>
