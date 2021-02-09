@@ -28,6 +28,9 @@ export const SearchBar = ({
             data-testid='clear-icon'
             className='fas fa-times'
             onClick={onClear}
+            onKeyUp={(event) => {
+              if (event.keyCode === 13) onClear();
+            }}
             tabIndex={0}
           ></i>
         </div>
@@ -36,6 +39,9 @@ export const SearchBar = ({
         <i
           className='fas fa-search'
           onClick={onSubmit}
+          onKeyUp={(event) => {
+            if (event.keyCode === 13) onSubmit();
+          }}
           title={APP_MESSAGES.searchArtistOrSong}
           tabIndex={0}
         ></i>
