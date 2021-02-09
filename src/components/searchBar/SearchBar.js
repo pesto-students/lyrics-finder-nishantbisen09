@@ -40,7 +40,7 @@ export const SearchBar = ({
           className='fas fa-search'
           onClick={onSubmit}
           onKeyUp={(event) => {
-            if (event.keyCode === 13) onSubmit();
+            if (event.keyCode === 13) onSubmit(event);
           }}
           title={APP_MESSAGES.searchArtistOrSong}
           tabIndex={0}
