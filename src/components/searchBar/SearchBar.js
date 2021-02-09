@@ -28,6 +28,7 @@ export const SearchBar = ({
             data-testid='clear-icon'
             className='fas fa-times'
             onClick={onClear}
+            tabIndex={0}
           ></i>
         </div>
       )}
@@ -36,6 +37,7 @@ export const SearchBar = ({
           className='fas fa-search'
           onClick={onSubmit}
           title={APP_MESSAGES.searchArtistOrSong}
+          tabIndex={0}
         ></i>
       </div>
     </div>

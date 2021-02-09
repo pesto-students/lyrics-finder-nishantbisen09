@@ -29,7 +29,7 @@ class LyricsAppContainer extends Component {
     const { searchQuery } = this.state;
     if (searchQuery.trim()) {
       this.setState({ isLoading: true });
-      fetchLyricSuggestions(escapeSlashes((searchQuery)))
+      fetchLyricSuggestions(escapeSlashes(searchQuery))
         .then((response) => response.json())
         .then((response) =>
           this.setState(
@@ -134,6 +134,14 @@ class LyricsAppContainer extends Component {
                           title,
                         })
                       }
+                      onKeyUp={(event) => {
+                        if (event.keyCode === 13)
+                          this.onLyricCardClick({
+                            artist: artist,
+                            title,
+                          });
+                      }}
+                      tabIndex={0}
                     >
                       <ResultCard title={title} artist={artist} />
                     </div>
