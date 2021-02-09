@@ -9,11 +9,10 @@ import {
   defaultPageSize,
   navigationActions,
   infoToastConfig,
-  warningToastConfig,
 } from '../utility/appConstants';
 import { APP_MESSAGES } from '../utility/strings';
 import './lyricsApp.css';
-import { escapeForwardSlash, getTotalNoOfPages } from '../utility';
+import { escapeSlashes, getTotalNoOfPages } from '../utility';
 import { toast } from 'react-toastify';
 
 class LyricsAppContainer extends Component {
@@ -28,9 +27,9 @@ class LyricsAppContainer extends Component {
 
   fetchLyrics = () => {
     const { searchQuery } = this.state;
-    if (searchQuery) {
+    if (searchQuery.trim()) {
       this.setState({ isLoading: true });
-      fetchLyricSuggestions(searchQuery)
+      fetchLyricSuggestions(escapeSlashes((searchQuery)))
         .then((response) => response.json())
         .then((response) =>
           this.setState(
@@ -47,7 +46,7 @@ class LyricsAppContainer extends Component {
           )
         );
     } else {
-      toast.warning(APP_MESSAGES.searchQueryEmpty, warningToastConfig);
+      toast.info(APP_MESSAGES.searchQueryEmpty, infoToastConfig);
     }
   };
 
@@ -75,7 +74,7 @@ class LyricsAppContainer extends Component {
 
   onLyricCardClick = ({ artist, title }) => {
     this.setState({ isLoading: true });
-    fetchLyrics({ artist: artist.name, title: escapeForwardSlash(title) })
+    fetchLyrics({ artist: artist.name, title: escapeSlashes(title) })
       .then((response) => response.json())
       .then(({ lyrics }) => {
         this.setState({

@@ -8,17 +8,13 @@ export const navigationActions = {
 };
 export const apiTimeOutLimit = 5000;
 export const infoToastConfig = {
-  position: toast.POSITION.TOP_CENTER,
+  position: toast.POSITION.TOP_RIGHT,
   style: {
     margin: 10,
     backgroundColor: '#13322D',
     color: 'white',
     fontWeight: 'bold',
   },
-};
-
-export const warningToastConfig = {
-  position: toast.POSITION.TOP_CENTER,
 };
 
 export const errorToastConfig = {

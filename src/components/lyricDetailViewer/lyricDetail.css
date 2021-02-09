@@ -110,12 +110,22 @@
     min-height: 80vh;
   }
   .lyric-info-container .lyrics {
-    margin-top: 100px;
     padding: 10px;
-    height: 55vh;
+    height: 56vh;
   }
   .lyric-info-container .back-btn {
     bottom: 7px;
+  }
+  .lyric-info-container .lyrics {
+    margin-top: 5px;
+}
+  .lyric-info {
+    position: relative;
+    left: 0;
+    top: 0;
+    height: 70px;
+    justify-content: center;
+    margin: 10px 20px 0px 20px;
   }
   .lyric-info .track-name {
     color: #233a9e;

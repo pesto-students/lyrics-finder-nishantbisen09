@@ -18,8 +18,8 @@ export function fetchWithTimeout(resource, timeout = apiTimeOutLimit, options) {
   });
 }
 
-export const escapeForwardSlash = (word) => {
-  return word.replace(/\//g, '-');
+export const escapeSlashes = (word) => {
+  return word.replace(/\//g, '-').replace(/\\/g,'');
 };
 
 export const getTotalNoOfPages = (noOfRecords) =>
