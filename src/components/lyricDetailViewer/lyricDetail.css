@@ -111,7 +111,7 @@
   }
   .lyric-info-container .lyrics {
     padding: 10px;
-    height: 56vh;
+    max-height: 56vh;
   }
   .lyric-info-container .back-btn {
     bottom: 7px;
