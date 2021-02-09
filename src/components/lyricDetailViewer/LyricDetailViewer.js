@@ -40,16 +40,14 @@ export const LyricDetailViewer = ({
           />
         </div>
       </div>
-      <div className='lyrics scroller'>
-        {lyrics ? (
-          lyrics
-        ) : (
-          <div className='lyrics-not-found'>
-            <i className='far fa-frown-open'></i>
-            <span className='empty-lyrics-message'>Lyrics not found.</span>
-          </div>
-        )}
-      </div>
+      {lyrics ? (
+        <div className='lyrics scroller'>{lyrics}</div>
+      ) : (
+        <div className='lyrics-not-found'>
+          <i className='far fa-frown-open'></i>
+          <span className='empty-lyrics-message'>Lyrics not found.</span>
+        </div>
+      )}
       <div className='back-btn'>
         <i
           className='fas fa-chevron-circle-left'

@@ -17,6 +17,10 @@ export const infoToastConfig = {
   },
 };
 
+export const warningToastConfig = {
+  position: toast.POSITION.TOP_CENTER,
+};
+
 export const errorToastConfig = {
   ...infoToastConfig,
   style: {

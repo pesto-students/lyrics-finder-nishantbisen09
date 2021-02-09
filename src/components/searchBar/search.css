@@ -4,7 +4,7 @@
 .search .search-input {
   padding: 7px;
   height: 22px;
-  border-radius: 10px;
+  border-radius: 6px;
   outline: none;
   border: none;
   opacity: 0.7;
@@ -20,17 +20,26 @@
   box-shadow: 1px 2px 11px 0px rgba(0, 0, 0, 0.75);
 }
 
-.search .search-icon {
+.search .search-icon,
+.search .clear-icon {
   position: absolute;
-  right: 10px;
-  top: 7px;
   color: #a8ababb9;
   cursor: pointer;
 }
 
+.search .search-icon{
+  right: 10px;
+  top: 7px;
+}
+
+.search .clear-icon{
+  right: 35px;
+  top: 7px;
+}
+
 @media (max-width: 600px) {
   .search .search-input {
-    width: 300px;
+    width: 90vw;
   }
 }
 

@@ -41,4 +41,12 @@ describe('SEARCHBAR COMPONENT', () => {
     const searchIcon = screen.getByTestId('search-icon');
     expect(searchIcon).toBeTruthy();
   });
+
+  it('Should display a clear icon when some text is present', () => {
+    render(<SearchBar {...defaultProps} />);
+    const clearIcon = screen.getByTestId('clear-icon');
+    expect(clearIcon).toBeTruthy();
+  });
+  
+
 });

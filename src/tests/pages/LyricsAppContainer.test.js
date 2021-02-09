@@ -4,6 +4,7 @@ import LyricsAppContainer from '../../pages/LyricsAppContainer';
 import userEvent from '@testing-library/user-event';
 import { suggestions } from '../Fixtures';
 import { APP_MESSAGES } from '../../utility/strings';
+import { toast } from 'react-toastify';
 
 describe('LYRIC APP CONTAINER', () => {
   let wrapper;
@@ -17,6 +18,14 @@ describe('LYRIC APP CONTAINER', () => {
   );
   const mockSuggestionsFetchPromise = Promise.resolve({
     json: () => mockSuggestionJsonPromise,
+  });
+
+  const mockEmptySuggestionSuccessResponse = { data: [] };
+  const mockEmptySuggestionJsonPromise = Promise.resolve(
+    mockEmptySuggestionSuccessResponse
+  );
+  const mockEmptySuggestionsFetchPromise = Promise.resolve({
+    json: () => mockEmptySuggestionJsonPromise,
   });
 
   const mockLyricsSuccessResponse = { lyrics };
@@ -38,6 +47,23 @@ describe('LYRIC APP CONTAINER', () => {
     expect(getByPlaceholderText(placeholder)).toBeTruthy();
   });
 
+  it('clears the search text when clicked on cross icon', () => {
+    const { getByPlaceholderText, getByTestId } = wrapper;
+    const input = getByPlaceholderText(placeholder);
+    userEvent.type(input, searchText);
+    const clearBtn = getByTestId('clear-icon');
+    userEvent.click(clearBtn);
+    expect(input.getAttribute('value')).toBe('');
+  });
+
+  it('shows warning message when no input is provided', () => {
+    toast.warning = jest.fn();
+    const { getByPlaceholderText } = wrapper;
+    const input = getByPlaceholderText(placeholder);
+    userEvent.type(input, `{enter}`);
+    expect(toast.warning).toHaveBeenCalled();
+  });
+
   it('shows search results when enter button is clicked on input', async () => {
     jest
       .spyOn(global, 'fetch')
@@ -48,7 +74,7 @@ describe('LYRIC APP CONTAINER', () => {
     const resultCard = await findAllByText('Khwabo k naate');
     expect(resultCard.length).toBeGreaterThan(0);
   });
-
+  
   it('shows paginator when the results appear', async () => {
     jest
       .spyOn(global, 'fetch')
@@ -106,21 +132,20 @@ describe('LYRIC APP CONTAINER', () => {
     expect(lyricsContainer).toBeTruthy();
   });
 
-  it('should go back to results view when back button is clicked',async () => {
+  it('should go back to results view when back button is clicked', async () => {
     jest
-    .spyOn(global, 'fetch')
-    .mockImplementation(() => mockSuggestionsFetchPromise);
-  const { getByPlaceholderText, findAllByText, findByTitle } = wrapper;
-  const input = getByPlaceholderText(placeholder);
-  userEvent.type(input, `${searchText}{enter}`);
-  const resultCard = await findAllByText('Khwabo k naate');
-  jest
-    .spyOn(global, 'fetch')
-    .mockImplementation(() => mockLyricsFetchPromise);
-  userEvent.click(resultCard[0]);
-  const backBtn = await findByTitle(APP_MESSAGES.goBackToResults);
-  userEvent.click(backBtn);
-  expect(resultCard[0]).toBeTruthy()
+      .spyOn(global, 'fetch')
+      .mockImplementation(() => mockSuggestionsFetchPromise);
+    const { getByPlaceholderText, findAllByText, findByTitle } = wrapper;
+    const input = getByPlaceholderText(placeholder);
+    userEvent.type(input, `${searchText}{enter}`);
+    const resultCard = await findAllByText('Khwabo k naate');
+    jest
+      .spyOn(global, 'fetch')
+      .mockImplementation(() => mockLyricsFetchPromise);
+    userEvent.click(resultCard[0]);
+    const backBtn = await findByTitle(APP_MESSAGES.goBackToResults);
+    userEvent.click(backBtn);
+    expect(resultCard[0]).toBeTruthy();
   });
-
 });

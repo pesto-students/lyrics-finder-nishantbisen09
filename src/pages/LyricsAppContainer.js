@@ -9,6 +9,7 @@ import {
   defaultPageSize,
   navigationActions,
   infoToastConfig,
+  warningToastConfig,
 } from '../utility/appConstants';
 import { APP_MESSAGES } from '../utility/strings';
 import './lyricsApp.css';
@@ -32,14 +33,21 @@ class LyricsAppContainer extends Component {
       fetchLyricSuggestions(searchQuery)
         .then((response) => response.json())
         .then((response) =>
-          this.setState({
-            suggestions: response.data,
-            isLoading: false,
-            currentPage: 1,
-            isLyricView: false,
-            currentLyrics: {},
-          })
+          this.setState(
+            {
+              suggestions: response.data,
+              isLoading: false,
+              currentPage: 1,
+              isLyricView: false,
+              currentLyrics: {},
+            },
+            () =>
+              !this.state.suggestions.length &&
+              toast.info(APP_MESSAGES.resultsNotFound, infoToastConfig)
+          )
         );
+    } else {
+      toast.warning(APP_MESSAGES.searchQueryEmpty, warningToastConfig);
     }
   };
 
@@ -102,6 +110,7 @@ class LyricsAppContainer extends Component {
               onSubmit={this.onSearchQuerySubmit}
               value={searchQuery}
               placeholder={'Search by song or artist name'}
+              onClear={() => this.setState({ searchQuery: '' })}
             />
           </div>
           {isLyricView && (
