@@ -41,7 +41,7 @@ export const LyricDetailViewer = ({
         </div>
       </div>
       {lyrics ? (
-        <div className='lyrics scroller'>{lyrics}</div>
+        <div className='lyrics scroller'><pre>{lyrics}</pre></div>
       ) : (
         <div className='lyrics-not-found'>
           <i className='far fa-frown-open'></i>
