@@ -7,7 +7,7 @@
   border-radius: 8px;
   overflow: hidden;
   box-sizing: border-box;
-  padding: 2% 25%;
+  padding: 2% 7%;
   text-align: center;
 }
 
@@ -112,6 +112,7 @@
   .lyric-info-container .lyrics {
     padding: 10px;
     max-height: 56vh;
+    font-size: 16px;
   }
   .lyric-info-container .back-btn {
     bottom: 7px;
