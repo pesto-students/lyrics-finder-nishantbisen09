@@ -123,7 +123,7 @@ class LyricsAppContainer extends Component {
           )}
           {!!suggestions.length && !isLyricView && (
             <div className='results-container'>
-              <div className='results'>
+              <div className='results scroller'>
                 {this.getSuggestionsByPageNo().map(({ title, artist, id }) => {
                   return (
                     <div
