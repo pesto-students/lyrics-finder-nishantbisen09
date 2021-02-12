@@ -22,6 +22,13 @@ export const LyricDetailViewer = ({
   return (
     <div className='lyric-info-container'>
       <div className='lyric-info'>
+        <div className='lyric-album-art'>
+          <img
+            src={artistImage}
+            onError={() => setArtistImage(defaultArtistImage)}
+            alt='artist-img'
+          />
+        </div>
         <div className='lyric-details'>
           <span className='track-name'>
             {title ? title : APP_MESSAGES.noTitleFound}
@@ -32,36 +39,35 @@ export const LyricDetailViewer = ({
               : APP_MESSAGES.artistNameUnavailable}
           </span>
         </div>
-        <div className='lyric-album-art'>
-          <img
-            src={artistImage}
-            onError={() => setArtistImage(defaultArtistImage)}
-            alt='artist-img'
-          />
-        </div>
       </div>
-      {lyrics ? (
-        <div className='lyrics scroller'><pre>{lyrics}</pre></div>
-      ) : (
+
+      <div className='lyrics scroller'>
+        <pre>{lyrics ? lyrics : ''}</pre>
+      </div>
+
+      {!lyrics ? (
         <div className='lyrics-not-found'>
           <i className='far fa-frown-open'></i>
           <span className='empty-lyrics-message'>Lyrics not found.</span>
         </div>
-      )}
-      <div className='back-btn'>
-        <i
-          className='fas fa-chevron-circle-left'
-          onClick={onBackButtonClick}
-          title={APP_MESSAGES.goBackToResults}
-        ></i>
-      </div>
-      {lyrics && (
-        <div className='copy-btn'>
-          <CopyToClipboard text={lyrics} onCopy={onCopyClick}>
-            <i className='fas fa-copy' title={APP_MESSAGES.copyLyrics}></i>
-          </CopyToClipboard>
+      ) : null}
+
+      <div className='controls'>
+      <div className='copy-btn'>
+          {lyrics && (
+            <CopyToClipboard text={lyrics} onCopy={onCopyClick}>
+              <i className='fas fa-copy' title={APP_MESSAGES.copyLyrics}></i>
+            </CopyToClipboard>
+          )}
         </div>
-      )}
+        <div className='back-btn'>
+          <i
+            className='fas fa-chevron-circle-left'
+            onClick={onBackButtonClick}
+            title={APP_MESSAGES.goBackToResults}
+          ></i>
+        </div>
+      </div>
     </div>
   );
 };

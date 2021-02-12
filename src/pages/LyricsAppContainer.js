@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { LyricDetailViewer } from '../components/lyricDetailViewer/LyricDetailViewer';
-import { PageNavigator } from '../components/pageNavigator/PageNavigator';
-import { ResultCard } from '../components/resultCard/ResultCard';
 import { SearchBar } from '../components/searchBar/SearchBar';
 import { Spinner } from '../components/spinner/spinner';
 import { fetchLyrics, fetchLyricSuggestions } from '../services/lyrics';
@@ -9,11 +7,14 @@ import {
   defaultPageSize,
   navigationActions,
   infoToastConfig,
+  appViews,
 } from '../utility/appConstants';
 import { APP_MESSAGES } from '../utility/strings';
 import './lyricsApp.css';
 import { escapeSlashes, getTotalNoOfPages } from '../utility';
 import { toast } from 'react-toastify';
+import { AppControlPanel } from './AppControlPanel';
+import { LyricsResults } from './LyricsResults';
 
 class LyricsAppContainer extends Component {
   state = {
@@ -22,6 +23,7 @@ class LyricsAppContainer extends Component {
     isLoading: false,
     currentPage: 1,
     currentLyrics: {},
+    currentView: appViews.searchResults,
     isLyricView: false,
   };
 
@@ -50,7 +52,7 @@ class LyricsAppContainer extends Component {
     }
   };
 
-  getSuggestionsByPageNo = () => {
+  getCurrentPageSuggestions = () => {
     const { currentPage, suggestions } = this.state;
     if (currentPage === 1) return suggestions.slice(0, defaultPageSize);
     let start = defaultPageSize * (currentPage - 1);
@@ -89,6 +91,10 @@ class LyricsAppContainer extends Component {
     this.setState({ isLyricView: false, currentLyrics: {} });
   };
 
+  onControlPanelItemClick = (panelName) => {
+    this.setState({ currentView: panelName });
+  };
+
   render() {
     const {
       searchQuery,
@@ -97,6 +103,7 @@ class LyricsAppContainer extends Component {
       currentPage,
       isLyricView,
       currentLyrics,
+      currentView,
     } = this.state;
     return (
       <>
@@ -112,49 +119,48 @@ class LyricsAppContainer extends Component {
               onClear={() => this.setState({ searchQuery: '' })}
             />
           </div>
-          {isLyricView && (
-            <LyricDetailViewer
-              lyricsData={currentLyrics}
-              onBackButtonClick={this.onGoBackFromLyricViewClick}
-              onCopyClick={() =>
-                toast.info(APP_MESSAGES.lyricsCopied, infoToastConfig)
-              }
+          <div className='control-panel-container'>
+            <AppControlPanel
+              currentView={currentView}
+              onControlPanelItemClick={this.onControlPanelItemClick}
             />
-          )}
-          {!!suggestions.length && !isLyricView && (
-            <div className='results-container'>
-              <div className='results scroller'>
-                {this.getSuggestionsByPageNo().map(({ title, artist, id }) => {
-                  return (
-                    <div
-                      key={id}
-                      onClick={() =>
-                        this.onLyricCardClick({
-                          artist: artist,
-                          title,
-                        })
-                      }
-                      onKeyUp={(event) => {
-                        if (event.keyCode === 13)
-                          this.onLyricCardClick({
-                            artist: artist,
-                            title,
-                          });
-                      }}
-                      tabIndex={0}
-                    >
-                      <ResultCard title={title} artist={artist} />
-                    </div>
-                  );
-                })}
-              </div>
-              <PageNavigator
-                currentPageNo={currentPage}
+          </div>
+          <div
+            className={`result-view ${
+              currentView === appViews.searchResults
+                ? 'display-block'
+                : 'display-none'
+            }`}
+          >
+            {isLyricView && (
+              <LyricDetailViewer
+                lyricsData={currentLyrics}
+                onBackButtonClick={this.onGoBackFromLyricViewClick}
+                onCopyClick={() =>
+                  toast.info(APP_MESSAGES.lyricsCopied, infoToastConfig)
+                }
+              />
+            )}
+            {!!suggestions.length && !isLyricView && (
+              <LyricsResults
+                suggestions={this.getCurrentPageSuggestions()}
+                currentPage={currentPage}
                 totalNoOfPages={getTotalNoOfPages(suggestions.length)}
+                onLyricCardClick={this.onLyricCardClick}
                 onNavigationButtonClick={this.onNavigationButtonClick}
               />
-            </div>
-          )}
+            )}
+          </div>
+          <div
+            className={`playlist-view ${
+              currentView === appViews.playlist
+                ? 'display-block'
+                : 'display-none'
+            }`}
+          >
+            Greetings from the developer, playlist is currently under
+            construction, Come back later!
+          </div>
         </div>
         <Spinner isLoading={isLoading} />
       </>

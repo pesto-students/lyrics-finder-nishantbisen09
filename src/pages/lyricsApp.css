@@ -5,13 +5,57 @@
   align-items: center;
 }
 
-.results-container {
+.app-container .control-panel-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.control-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.control-panel .panel-item:not(:last-child) {
+  border-right: 1px solid #ddd;
+}
+
+.control-panel .panel-item {
+  display: flex;
+  width: 100%;
+  color: cornflowerblue;
+  justify-content: center;
+  padding: 5px;
+  font-size: medium;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
+    'Lucida Sans', Arial, sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.inactive-panel {
+  color: rgb(138, 170, 230) !important;
+}
+
+.app-container .control-panel-container {
+  margin-top: 50px;
+}
+
+.control-panel {
+  background-color: #f5f5f5ab;
+  border-radius: 8px;
+  width: 300px;
+}
+
+.result-view,
+.playlist-view {
   position: relative;
   margin: 50px 5%;
   width: auto;
   background-color: #f5f5f5ab;
   border-radius: 8px;
-  overflow: hidden;
   box-sizing: border-box;
 }
 
@@ -22,12 +66,46 @@
   overflow-y: auto;
 }
 
+.display-block {
+  display: block;
+}
+
+.left-shadow {
+  box-shadow: -9px 2px 17px -6px rgba(0, 0, 0, 0.75);
+  transition: box-shadow 500ms;
+}
+.right-shadow {
+  box-shadow: 7px 1px 17px -6px rgba(0, 0, 0, 0.75);
+  transition: box-shadow 500ms;
+}
+
+.playlist-view {
+  font-size: large;
+  font-weight: 500;
+  text-align: center;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.display-none {
+  display: none;
+}
+
 @media (max-width: 600px) {
-  .results-container {
-    height: 70vh;
+  .result-view,
+  .playlist-view {
+    height: 77vh;
+  }
+  .app-container .control-panel-container,
+  .app-container .search-panel-container,
+  .result-view,
+  .playlist-view {
+    margin-top: 15px;
   }
   .results {
-    height: 55vh;
+    height: 62vh;
     padding: 18px;
   }
   .page-navigator-container {
@@ -40,9 +118,9 @@
 }
 
 @media (min-width: 800px) {
-  .results-container {
-    max-height: 500px;
-    min-height: 450px;
+  .result-view,
+  .playlist-view {
+    height: 530px;
   }
   .results {
     max-height: 37vh;
