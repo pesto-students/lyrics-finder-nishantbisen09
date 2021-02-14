@@ -64,22 +64,27 @@ export const LyricDetailViewer = ({
               </CopyToClipboard>
             )}
           </div>
-          <div
-            className='favorite-btn'
-            onClick={() => {
-              setFavoriteState(!favoriteState);
-              onFavoriteClick();
-            }}
-          >
-            {favoriteState ? (
-              <i
-                className='fas fa-heart'
-                title={APP_MESSAGES.removeFavorite}
-              ></i>
-            ) : (
-              <i className='far fa-heart' title={APP_MESSAGES.addFavorite}></i>
-            )}
-          </div>
+          {lyrics && (
+            <div
+              className='favorite-btn'
+              onClick={() => {
+                setFavoriteState(!favoriteState);
+                onFavoriteClick();
+              }}
+            >
+              {favoriteState ? (
+                <i
+                  className='fas fa-heart'
+                  title={APP_MESSAGES.removeFavorite}
+                ></i>
+              ) : (
+                <i
+                  className='far fa-heart'
+                  title={APP_MESSAGES.addFavorite}
+                ></i>
+              )}
+            </div>
+          )}
         </div>
         <div className='back-btn'>
           <i
