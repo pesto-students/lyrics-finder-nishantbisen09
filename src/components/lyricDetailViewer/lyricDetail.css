@@ -23,7 +23,7 @@
   width: 90%;
   left: 50%;
   transform: translate(-50%, 0);
-  bottom: 0;
+  bottom: 10px;
 }
 
 .controls .actions {
