@@ -17,6 +17,10 @@ export const LyricDetailViewer = ({
   const [favoriteState, setFavoriteState] = useState(isFavorite);
 
   useEffect(() => {
+    setFavoriteState(isFavorite);
+  }, [isFavorite]);
+
+  useEffect(() => {
     setArtistImage(
       artist && artist.picture_small ? artist.picture_small : defaultArtistImage
     );

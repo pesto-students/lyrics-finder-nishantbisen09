@@ -17,6 +17,7 @@ import { AppControlPanel } from './AppControlPanel';
 import { LyricsResults } from './LyricsResults';
 import concertImage from '../assets/images/concert.png';
 import lyricsStorageManager from '../utility/LyricsStorageManager';
+import FavoriteView from './FavoriteView';
 
 class LyricsAppContainer extends Component {
   state = {
@@ -27,6 +28,7 @@ class LyricsAppContainer extends Component {
     currentLyrics: {},
     currentView: appViews.searchResults,
     isLyricView: false,
+    favorites: lyricsStorageManager.getAllLyricsInfo(),
   };
 
   fetchLyrics = () => {
@@ -105,12 +107,26 @@ class LyricsAppContainer extends Component {
     const { currentLyrics } = this.state;
     if (!lyricsStorageManager.isLyricsInfoPresent(currentLyrics.id)) {
       lyricsStorageManager.saveLyricsInfo(currentLyrics);
+      this.setState({ favorites: lyricsStorageManager.getAllLyricsInfo() });
       toast.info(APP_MESSAGES.lyricsAddedToFavorite);
     } else {
       lyricsStorageManager.deleteLyricsInfo(currentLyrics.id);
+      this.setState({ favorites: lyricsStorageManager.getAllLyricsInfo() });
       toast.info(APP_MESSAGES.lyricsRemovedFromFavorite);
     }
   };
+
+  onLocalFavoriteClick = (currentLyrics) => {
+    if (!lyricsStorageManager.isLyricsInfoPresent(currentLyrics.id)) {
+      lyricsStorageManager.saveLyricsInfo(currentLyrics);
+      this.setState({ favorites: lyricsStorageManager.getAllLyricsInfo() });
+      toast.info(APP_MESSAGES.lyricsAddedToFavorite);
+    } else {
+      lyricsStorageManager.deleteLyricsInfo(currentLyrics.id);
+      this.setState({ favorites: lyricsStorageManager.getAllLyricsInfo() });
+      toast.info(APP_MESSAGES.lyricsRemovedFromFavorite);
+    }
+  }
 
   render() {
     const {
@@ -121,6 +137,7 @@ class LyricsAppContainer extends Component {
       isLyricView,
       currentLyrics,
       currentView,
+      favorites,
     } = this.state;
     return (
       <>
@@ -187,8 +204,7 @@ class LyricsAppContainer extends Component {
                 : 'display-none'
             }`}
           >
-            Greetings from the developer, playlist is currently under
-            construction, Come back later!
+            <FavoriteView favorites={favorites} onFavoriteClick={this.onLocalFavoriteClick} />
           </div>
         </div>
         <Spinner isLoading={isLoading} />

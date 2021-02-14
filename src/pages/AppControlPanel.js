@@ -20,7 +20,7 @@ export const AppControlPanel = ({ currentView, onControlPanelItemClick }) => {
         }`}
         onClick={() => onControlPanelItemClick(appViews.playlist)}
       >
-        Playlist
+        Favorites
       </div>
     </div>
   );

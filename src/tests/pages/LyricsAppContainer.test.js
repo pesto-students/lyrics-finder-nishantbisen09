@@ -57,11 +57,11 @@ describe('LYRIC APP CONTAINER', () => {
   });
 
   it('shows warning message when no input is provided', () => {
-    toast.info = jest.fn();
+    toast.error = jest.fn();
     const { getByPlaceholderText } = wrapper;
     const input = getByPlaceholderText(placeholder);
     userEvent.type(input, `{enter}`);
-    expect(toast.info).toHaveBeenCalled();
+    expect(toast.error).toHaveBeenCalled();
   });
 
   it('shows search results when enter button is clicked on input', async () => {
