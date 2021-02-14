@@ -54,7 +54,7 @@ class LyricsAppContainer extends Component {
           toast.error(error);
         });
     } else {
-      toast.info(APP_MESSAGES.searchQueryEmpty, infoToastConfig);
+      toast.error(APP_MESSAGES.searchQueryEmpty, infoToastConfig);
     }
   };
 
@@ -103,10 +103,12 @@ class LyricsAppContainer extends Component {
 
   onFavoriteClick = () => {
     const { currentLyrics } = this.state;
-    if (!lyricsStorageManager.isLyricsInfoPresent(currentLyrics.id))
+    if (!lyricsStorageManager.isLyricsInfoPresent(currentLyrics.id)) {
       lyricsStorageManager.saveLyricsInfo(currentLyrics);
-    else {
+      toast.info(APP_MESSAGES.lyricsAddedToFavorite);
+    } else {
       lyricsStorageManager.deleteLyricsInfo(currentLyrics.id);
+      toast.info(APP_MESSAGES.lyricsRemovedFromFavorite);
     }
   };
 

@@ -15,8 +15,6 @@ export const infoToastConfig = {
   position: toast.POSITION.TOP_RIGHT,
   style: {
     margin: 10,
-    backgroundColor: '#13322D',
-    color: 'white',
     fontWeight: 'bold',
   },
 };

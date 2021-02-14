@@ -11,4 +11,6 @@ export const APP_MESSAGES = {
   resultsNotFound: 'Results not found!',
   removeFavorite: 'Remove Favorite',
   addFavorite: 'Add Favorite',
+  lyricsAddedToFavorite: 'Lyrics added to favorites!',
+  lyricsRemovedFromFavorite: 'Lyrics removed from favorites!',
 };
