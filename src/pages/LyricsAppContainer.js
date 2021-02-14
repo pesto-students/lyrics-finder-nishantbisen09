@@ -15,6 +15,7 @@ import { escapeSlashes, getTotalNoOfPages } from '../utility';
 import { toast } from 'react-toastify';
 import { AppControlPanel } from './AppControlPanel';
 import { LyricsResults } from './LyricsResults';
+import concertImage from '../assets/images/concert.png';
 
 class LyricsAppContainer extends Component {
   state = {
@@ -141,7 +142,7 @@ class LyricsAppContainer extends Component {
                 }
               />
             )}
-            {!!suggestions.length && !isLyricView && (
+            {suggestions.length !== 0 && !isLyricView && (
               <LyricsResults
                 suggestions={this.getCurrentPageSuggestions()}
                 currentPage={currentPage}
@@ -149,6 +150,14 @@ class LyricsAppContainer extends Component {
                 onLyricCardClick={this.onLyricCardClick}
                 onNavigationButtonClick={this.onNavigationButtonClick}
               />
+            )}{' '}
+            {suggestions.length === 0 && !isLyricView && (
+              <div className='hint-message'>
+                <img src={concertImage} alt='hint message' />
+                <div className='hint-message-text'>
+                  Don't forget to search that high note song!
+                </div>
+              </div>
             )}
           </div>
           <div

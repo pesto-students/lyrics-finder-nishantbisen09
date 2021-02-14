@@ -9,7 +9,7 @@
   font-size: 20px;
   font-style: italic;
   font-weight: 500;
-  height: 49vh;
+  height: 45vh;
   overflow-y: auto;
   margin-top: 25px;
 }
@@ -20,7 +20,9 @@
   align-items: center;
   margin-top: 5px;
   position: absolute;
-  width: 100%;
+  width: 90%;
+  left: 50%;
+  transform: translate(-50%, 10px);
   bottom: 0;
 }
 
