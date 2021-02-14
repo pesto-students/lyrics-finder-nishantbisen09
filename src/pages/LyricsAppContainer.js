@@ -16,6 +16,7 @@ import { toast } from 'react-toastify';
 import { AppControlPanel } from './AppControlPanel';
 import { LyricsResults } from './LyricsResults';
 import concertImage from '../assets/images/concert.png';
+import lyricsStorageManager from '../utility/LyricsStorageManager';
 
 class LyricsAppContainer extends Component {
   state = {
@@ -47,7 +48,11 @@ class LyricsAppContainer extends Component {
               !this.state.suggestions.length &&
               toast.info(APP_MESSAGES.resultsNotFound, infoToastConfig)
           )
-        );
+        )
+        .catch((error) => {
+          this.setState({ isLoading: false });
+          toast.error(error);
+        });
     } else {
       toast.info(APP_MESSAGES.searchQueryEmpty, infoToastConfig);
     }
@@ -75,14 +80,14 @@ class LyricsAppContainer extends Component {
     });
   };
 
-  onLyricCardClick = ({ artist, title }) => {
+  onLyricCardClick = ({ id, artist, title }) => {
     this.setState({ isLoading: true });
     fetchLyrics({ artist: artist.name, title: escapeSlashes(title) })
       .then((response) => response.json())
       .then(({ lyrics }) => {
         this.setState({
           isLoading: false,
-          currentLyrics: { lyrics, artist, title },
+          currentLyrics: { id, lyrics, artist, title },
           isLyricView: true,
         });
       });
@@ -94,6 +99,15 @@ class LyricsAppContainer extends Component {
 
   onControlPanelItemClick = (panelName) => {
     this.setState({ currentView: panelName });
+  };
+
+  onFavoriteClick = () => {
+    const { currentLyrics } = this.state;
+    if (!lyricsStorageManager.isLyricsInfoPresent(currentLyrics.id))
+      lyricsStorageManager.saveLyricsInfo(currentLyrics);
+    else {
+      lyricsStorageManager.deleteLyricsInfo(currentLyrics.id);
+    }
   };
 
   render() {
@@ -140,6 +154,10 @@ class LyricsAppContainer extends Component {
                 onCopyClick={() =>
                   toast.info(APP_MESSAGES.lyricsCopied, infoToastConfig)
                 }
+                onFavoriteClick={this.onFavoriteClick}
+                isFavorite={lyricsStorageManager.isLyricsInfoPresent(
+                  currentLyrics.id
+                )}
               />
             )}
             {suggestions.length !== 0 && !isLyricView && (

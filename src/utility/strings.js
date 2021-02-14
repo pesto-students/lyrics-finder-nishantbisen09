@@ -8,5 +8,7 @@ export const APP_MESSAGES = {
   copyLyrics: 'Copy lyrics',
   searchArtistOrSong: 'Search artist or song name',
   searchQueryEmpty: 'Please enter a valid query',
-  resultsNotFound: 'Results not found!'
+  resultsNotFound: 'Results not found!',
+  removeFavorite: 'Remove Favorite',
+  addFavorite: 'Add Favorite',
 };

@@ -22,8 +22,16 @@
   position: absolute;
   width: 90%;
   left: 50%;
-  transform: translate(-50%, 10px);
+  transform: translate(-50%, 0);
   bottom: 0;
+}
+
+.controls .actions {
+  display: flex;
+}
+
+.controls .actions div {
+  margin: 0 10px;
 }
 
 .lyric-info {
@@ -65,7 +73,8 @@
 }
 
 .lyric-info-container .back-btn i,
-.lyric-info-container .copy-btn {
+.lyric-info-container .copy-btn i,
+.controls .actions i {
   color: #13322d;
   font-size: 30px;
   cursor: pointer;
@@ -91,6 +100,9 @@
     margin: 15px 13px;
     padding: 1px;
     height: 75vh;
+  }
+  .controls {
+    width: 100%;
   }
   .lyric-info-container .lyrics {
     padding: 10px;

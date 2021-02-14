@@ -18,6 +18,7 @@ export const LyricsResults = ({
               key={id}
               onClick={() =>
                 onLyricCardClick({
+                  id,
                   artist: artist,
                   title,
                 })

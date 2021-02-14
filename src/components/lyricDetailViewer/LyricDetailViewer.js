@@ -8,10 +8,13 @@ export const LyricDetailViewer = ({
   lyricsData,
   onBackButtonClick,
   onCopyClick,
+  isFavorite,
+  onFavoriteClick,
 }) => {
   const { lyrics, artist, title } = lyricsData;
 
   const [artistImage, setArtistImage] = useState(defaultArtistImage);
+  const [favoriteState, setFavoriteState] = useState(isFavorite);
 
   useEffect(() => {
     setArtistImage(
@@ -53,12 +56,30 @@ export const LyricDetailViewer = ({
       ) : null}
 
       <div className='controls'>
-      <div className='copy-btn'>
-          {lyrics && (
-            <CopyToClipboard text={lyrics} onCopy={onCopyClick}>
-              <i className='fas fa-copy' title={APP_MESSAGES.copyLyrics}></i>
-            </CopyToClipboard>
-          )}
+        <div className='actions'>
+          <div className='copy-btn'>
+            {lyrics && (
+              <CopyToClipboard text={lyrics} onCopy={onCopyClick}>
+                <i className='fas fa-copy' title={APP_MESSAGES.copyLyrics}></i>
+              </CopyToClipboard>
+            )}
+          </div>
+          <div
+            className='favorite-btn'
+            onClick={() => {
+              setFavoriteState(!favoriteState);
+              onFavoriteClick();
+            }}
+          >
+            {favoriteState ? (
+              <i
+                className='fas fa-heart'
+                title={APP_MESSAGES.removeFavorite}
+              ></i>
+            ) : (
+              <i className='far fa-heart' title={APP_MESSAGES.addFavorite}></i>
+            )}
+          </div>
         </div>
         <div className='back-btn'>
           <i

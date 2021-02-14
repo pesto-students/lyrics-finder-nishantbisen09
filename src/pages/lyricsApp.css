@@ -124,6 +124,9 @@
     height: 62vh;
     padding: 18px;
   }
+  .hint-message img {
+    height: 300px;
+  }
   .page-navigator-container {
     position: absolute;
     display: flex;
