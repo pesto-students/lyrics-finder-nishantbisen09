@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 
-export const baseURL = 'https://api.lyrics.ovh/';
+export const baseURL = 'https://lyrist.vercel.app/api/';
 export const defaultPageSize = 9;
 export const navigationActions = {
   next: 'next',
